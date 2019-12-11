@@ -6,7 +6,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -88,6 +90,17 @@ class ClientHandler implements Runnable
                        os.write(b,0,b.length);
                        os.flush();
                        System.out.println("after download");
+                    }
+                    else if(command.length()>7&&command.substring(0, 6).equals("upload")){
+                       System.out.println("upload checked");
+                       dos.writeUTF("send");
+                       dos.flush();
+                       String []down_dtls = command.split(" ");                      
+                       byte []b = new byte[2002];
+                       InputStream is = s.getInputStream();
+                       FileOutputStream fr = new FileOutputStream(cmd_hndlr.driver_facades.logged_in_user_current_path+down_dtls[1]);
+                       is.read(b,0,b.length);
+                       fr.write(b, 0, b.length);
                     }
                     else if(command.equals("bye")){
                         dos.writeUTF("bye");

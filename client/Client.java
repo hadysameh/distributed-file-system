@@ -7,9 +7,11 @@ package distributed.client;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -49,10 +51,43 @@ public class Client {
                             }                            
                         }
                         System.out.println(file_path+"/"+down_dtls[1]);
-                        FileOutputStream fr = new FileOutputStream(file_path+"/"+down_dtls[1]);
+                        FileOutputStream fr = new FileOutputStream(file_path+"/"+down_dtls[1]);//file to write into
                         is.read(b,0,b.length);
                         fr.write(b,0,b.length);
-                        System.out.println("after download");
+                        System.out.println("success");
+                        continue;
+                    }
+                    else{
+                        String result = dis.readUTF();
+                        System.out.println(result);
+                    }
+                    
+                    
+                }
+                else if(user_input.length()>7&&user_input.substring(0, 6).equals("upload")){
+                    String []up_dtls = user_input.split(" ");
+                    dos.writeUTF(user_input);                
+                    dos.flush();   
+//                    System.out.println(user_input);
+                    String msg_form_srvr = dis.readUTF();
+                    if(msg_form_srvr.equals("send")){                                                                        
+                        String file_path ="";
+                        for(int i =2;i<up_dtls.length;i++){
+                            if(i<up_dtls.length-1){
+                                file_path+=up_dtls[i]+" ";
+                            }
+                            else
+                            {
+                                file_path+=up_dtls[i];
+                            }                            
+                        }
+                        byte []b = new byte[2002];
+                        FileInputStream fr = new FileInputStream(file_path+"/"+up_dtls[1]);//file to read from
+                        fr.read(b,0,b.length);
+                        OutputStream os = s.getOutputStream();
+                        os.write(b,0,b.length);
+                        os.flush();
+                        System.out.println("success");
                         continue;
                     }
                     else{
