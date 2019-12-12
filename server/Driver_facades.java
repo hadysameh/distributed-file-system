@@ -91,7 +91,7 @@ public class Driver_facades {
         if(driver.is_thing_exist_in_dir(logged_in_user_current_path, file_name))
         {
             /*first check the new path where if it's from home root or where*/
-            if(new_path.substring(0, 5).equals("home/")){
+            if(new_path.length()>=5&&new_path.substring(0, 5).equals("home/")){
 //                System.out.println("if path");
                 if(driver.is_path_exist(logged_in_user_home_path.subSequence(0, logged_in_user_home_path.length()-5)+"/"+new_path)){
 //                    System.out.println("move full path path exist");
@@ -133,7 +133,7 @@ public class Driver_facades {
                  if(driver.is_path_exist(logged_in_user_current_path+paste_path))
                  { 
                     System.out.println("normal path");
-                    String str =logged_in_user_current_path + paste_path;
+                    String str =logged_in_user_current_path + paste_path+"/";
                     File file_in_path = new File(logged_in_user_current_path+file_name);
                     File paste_file_path = new File(str+file_name);
                     driver.copy(file_in_path, paste_file_path);
@@ -149,8 +149,8 @@ public class Driver_facades {
     public boolean cd(String command){
         String []cmd_dtls = command.split(" ");
         try{
-            System.out.println(cmd_dtls[0]);
-            System.out.println(cmd_dtls[1]);
+//            System.out.println(cmd_dtls[0]);
+//            System.out.println(cmd_dtls[1]);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -171,7 +171,7 @@ public class Driver_facades {
             }
             else if(cmd_dtls[1].length()>5&&cmd_dtls[1].substring(0, 5).equals("home/"))
             {
-                System.out.println("cd path");
+//                System.out.println("cd path");
                 if(driver.is_path_exist(logged_in_user_home_path.replaceAll("home/", cmd_dtls[1]))){
                     logged_in_user_current_path = logged_in_user_home_path.replaceAll("home/", cmd_dtls[1]+"/"); 
                     return true;
@@ -179,12 +179,12 @@ public class Driver_facades {
                 return false;
             }
             else{
-                System.out.println("cd foler");
-                System.out.println(logged_in_user_current_path);
+//                System.out.println("cd foler");
+//                System.out.println(logged_in_user_current_path);
                 if(driver.is_path_exist(logged_in_user_current_path + cmd_dtls[1])){
-                    System.out.println(logged_in_user_current_path);
+//                    System.out.println(logged_in_user_current_path);
                     logged_in_user_current_path = logged_in_user_current_path +/* "/" +*/cmd_dtls[1]+"/"; 
-                    System.out.println(logged_in_user_current_path);
+//                    System.out.println(logged_in_user_current_path);
                     return true;
                 }
                 
@@ -204,27 +204,6 @@ public class Driver_facades {
     }
     
     public static void main (String [] str007) throws IOException{
-//        Driver_facades d = new Driver_facades(); 
         
-//        System.out.println(d.pwd());
-//        String test = "F:\\4th cse asu\\distributed project\\project_actual_storage\\test@test.com\\home";
-//        test.length()=test.length()-5;
-        
-//        System.out.println(test.subSequence(0, test.length()-5));
-        
-//        File f = new File("E:\\serieses\\peaky blinders\\season 3");
-//        String str =f.getParentFile().getName();
-//        str =f.getParentFile().getAbsolutePath();
-//        str =f.getParentFile().getCanonicalPath();
-//        System.out.println(str);
-        String str = "F:/4th cse asu/distributed project/project_actual_storage/test@test.com/home";
-        
-        String str1= "test@test.com/home";
-        
-        String str2=str.replaceAll(str1, "test");
-        
-        System.out.println(str2);
-//        System.out.println(d.pwd);
-//        d.cd("")
     }
 }

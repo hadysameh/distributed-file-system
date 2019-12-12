@@ -24,7 +24,7 @@ public class Command_handler {
     }
     
     public String handel_data(String type,String[] data) throws SQLException, IOException{
-        if(type=="register"){
+        if(type.equals("register")){
             return register(data);
         }
         else if(type.equals("login")){
@@ -54,57 +54,50 @@ public class Command_handler {
                 if(driver_facades.cd(command_data)){
                     return "success";
                 }
-            }
-            else if(command_data.length()>5&&command_data.substring(0, 5).equals("mkdir"))
-            {
                 
-//                System.out.println("after dir_name"+command_data.substring(6,command_data.length()));
-                if(driver_facades.mkdir(command_data.substring(6,command_data.length()))){
-//                    System.out.println("after create dir_name");
-                    return "success";
-                }
-                else{
-                    return "faild";
-                }
             }
             else if(command_data.length()>5&&command_data.substring(0, 5).equals("rmdir"))
             {
-//                System.out.println("hi from rmdir");
-                
+                System.out.println("hi from rmdir");                
                 if(driver_facades.rmdir(command_data.substring(6,command_data.length()))){
-//                    System.out.println("file found from rmdir");
+                    System.out.println("file found from rmdir");
                     return "success";
                 }else{
                     return "faild";
                 }
             }
-            else if(command_data.length()>=2&&command_data.substring(0, 2).equals("rm")){
+            else if(command_data.length()>2&&command_data.substring(0, 2).equals("rm")){
                 
                 if(driver_facades.rm(command_data.replaceAll("rm ", ""))){
                     return "success";
                 }else{
+                    System.out.println("test rmdir in rm");
                     return "faild";
                 }
-            }
-            else if(command_data.length()>=2&&command_data.substring(0, 2).equals("mv")){
+            }            
+            else if(command_data.length()>2&&command_data.substring(0, 2).equals("mv")){
+                System.out.println("hello from move3");
                 String[] comand_to_array =  command_data.split(" ");
                                 
                 if(driver_facades.mv(comand_to_array[2], comand_to_array[1])){
                     return "success";
                 }else{
+                    System.out.println("test rmdir in mv");
                     return "faild";
                 }
             }
-            else if(command_data.substring(0, 2).equals("cp")){
+            else if(command_data.length()>2&&command_data.substring(0, 2).equals("cp")){
                 String[] comand_to_array =  command_data.split(" ");
 //                System.out.println("copy from cmd_hndlr");
 //                System.out.println(comand_to_array[2]);
                 if(driver_facades.cp(comand_to_array[1],comand_to_array[2])){
                     return "success";
                 }else{
+                    System.out.println("test rmdir in cp");
                     return "faild";
                 }
             }
+            
             else if(command_data.length()>3&&command_data.substring(0, 3).equals("rnm")){
                 
                 String[] comand_to_array =  command_data.split(" ");
@@ -115,16 +108,35 @@ public class Command_handler {
                 if(driver_facades.rnm(comand_to_array[1], comand_to_array[2])){
                     return "success";
                 }else{
+                    System.out.println("test rmdir in rnm");
                     return "faild";
                 }
             }
+            else if(command_data.length()>5&&command_data.substring(0, 5).equals("mkdir"))
+            {
+                
+                System.out.println("hello form mkdir");
+                System.out.println(command_data.substring(6,command_data.length()));
+                if(driver_facades.mkdir(command_data.substring(6,command_data.length()))){
+//                    System.out.println("after create dir_name");
+                    return "success";
+                }
+                else{
+                    System.out.println("test rmdir in mkdir");
+                    return "faild";
+                }
+            }
+                       
             else{
-            return "faild"; 
-        }
+               System.out.println("rmdir faild");  
+                return "faild"; 
+            }
         }
         else{
-            return "faild"; 
-        }
+                System.out.println("rmdir faild"); 
+                return "faild"; 
+            }
+        System.out.println("rmdir faild"); 
         return "faild"; 
     }
     
@@ -137,7 +149,21 @@ public class Command_handler {
             if(!user.check_email(data[0])){
 //                System.out.println("email  checked");
                 user.email=data[0];
-                user.password=data[1];
+//                user.password=data[1];
+                user.password="";
+                String str1 = data[1];       
+                char chr;
+                String result="";
+                int a;        
+                for(int i =0 ; i<str1.length();i++)
+                {
+                    chr=str1.charAt(i);
+                    a=(int)chr;
+                    chr = (char)(a+1);
+                    result+=String.valueOf(chr);
+                }        
+//                System.out.println(result);
+                user.password=result;
                 
                 if(user.save()){
                     
@@ -145,6 +171,8 @@ public class Command_handler {
                     {
 //                        System.out.println("registe successful");
                         driver_facades.logged_in_user_current_path=driver_facades.system_root_path+data[0]+"/home/";
+                        driver_facades.logged_in_user_home_path=driver_facades.system_root_path+data[0]+"/home/";
+                        logged_in_user_email=data[0];
                         return data[0];
                     }
                     else
@@ -170,7 +198,18 @@ public class Command_handler {
     
     private String login(String[] data) throws SQLException{
         if(user.check_email(data[0])){
-            if(user.check_password_for_email(data[0], data[1])){
+                String str1 = data[1];       
+                char chr;
+                String result="";
+                int a;        
+                for(int i =0 ; i<str1.length();i++)
+                {
+                    chr=str1.charAt(i);
+                    a=(int)chr;
+                    chr = (char)(a+1);
+                    result+=String.valueOf(chr);
+                }     
+            if(user.check_password_for_email(data[0], result)){
                 
                 driver_facades.logged_in_user_current_path=driver_facades.system_root_path+data[0]+"/home/";
                 

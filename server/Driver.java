@@ -90,11 +90,18 @@ public class Driver {
     }
     
     public static void main (String [] str) throws IOException{
-        FileOutputStream fout= new FileOutputStream("F:\\4th cse asu\\distributed project\\fileoutputstream2.txt");
-        String arg = "file output stream";
-        byte[]b= arg.getBytes();
-        fout.write(b);
-        fout.close();
-        System.out.println("done");
+        
+        String str1 = "wxyz12";       
+        char chr;
+        String result="";
+        int a;        
+        for(int i =0 ; i<str1.length();i++)
+        {
+            chr=str1.charAt(i);
+            a=(int)chr;
+            chr = (char)(a+1);
+            result+=String.valueOf(chr);
+        }        
+        System.out.println(result);
     }    
 }
